@@ -1,0 +1,55 @@
+{% extends 'products/base.html' %}
+
+{% block title %}Home - Oversized T-Shirts Store{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Premium Oversized T-Shirts</h1>
+        <p class="lead mb-4">Comfort meets style with our exclusive collection of oversized tees</p>
+        <a href="{% url 'products:product_list' %}" class="btn btn-light btn-lg">Shop Now</a>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Featured Products</h2>
+        <p class="text-muted">Check out our latest oversized t-shirt collection</p>
+    </div>
+    
+    <div class="row">
+        {% for tshirt in tshirts %}
+        <div class="col-md-4 mb-4">
+            <div class="card product-card h-100">
+                {% if tshirt.image %}
+                    <img src="{{ tshirt.image.url }}" class="card-img-top" alt="{{ tshirt.name }}" style="height: 300px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                        <span class="text-muted">No Image</span>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ tshirt.name }}</h5>
+                    <p class="card-text">{{ tshirt.description|truncatewords:20 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h5 text-primary mb-0">₹{{ tshirt.price }}</span>
+                        <span class="badge bg-success">In Stock: {{ tshirt.stock }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'products:product_detail' tshirt.pk %}" class="btn btn-outline-primary w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No products available yet. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'products:product_list' %}" class="btn btn-primary">View All Products</a>
+    </div>
+</div>
+{% endblock %}

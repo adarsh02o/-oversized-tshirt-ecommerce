@@ -1,0 +1,99 @@
+{% extends 'products/base.html' %}
+
+{% block title %}Admin Dashboard - Oversized T-Shirts Store{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">Admin Dashboard</h1>
+        <div>
+            <a href="{% url 'admin:index' %}" class="btn btn-outline-primary me-2">Django Admin</a>
+            <a href="{% url 'products:home' %}" class="btn btn-secondary">Back to Store</a>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Products</h5>
+                    <h2 class="card-text">{{ total_products }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">In Stock</h5>
+                    <h2 class="card-text">{{ tshirts|selectattr:'stock'|list|length }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Low Stock</h5>
+                    <h2 class="card-text">{{ tshirts|selectattr:'stock'|list|length }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Product Management</h5>
+            <a href="{% url 'admin:products_tshirt_add' %}" class="btn btn-primary">Add New Product</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tshirt in tshirts %}
+                        <tr>
+                            <td>
+                                {% if tshirt.image %}
+                                    <img src="{{ tshirt.image.url }}" alt="{{ tshirt.name }}" style="width: 50px; height: 50px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <span class="text-muted small">No img</span>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>{{ tshirt.name }}</td>
+                            <td>₹{{ tshirt.price }}</td>
+                            <td>{{ tshirt.stock }}</td>
+                            <td>
+                                {% if tshirt.stock > 10 %}
+                                    <span class="badge bg-success">In Stock</span>
+                                {% elif tshirt.stock > 0 %}
+                                    <span class="badge bg-warning">Low Stock</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Out of Stock</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'admin:products_tshirt_change' tshirt.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No products found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
