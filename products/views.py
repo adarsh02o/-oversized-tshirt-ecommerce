@@ -8,6 +8,9 @@ def home(request):
     }
     return render(request, 'products/home.html', context)
 
+def about(request):
+    return render(request, 'products/about.html')
+
 def product_list(request):
     tshirts = TShirt.objects.filter(is_oversized=True)
     context = {

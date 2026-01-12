@@ -119,9 +119,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # Login/Logout redirects
-LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = 'products:home'
-LOGOUT_REDIRECT_URL = 'products:home'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Media files for product images
 MEDIA_URL = '/media/'
